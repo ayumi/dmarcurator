@@ -8,9 +8,15 @@ module Dmarcurator
     class Base
       attr_reader :doc
 
-      def initialize(xml:)
-        content = File.read(xml)
-        @doc = Ox.parse(content)
+      def initialize(xml: nil, parsed_xml: nil)
+        if xml
+          content = File.read(xml)
+          @doc = Ox.parse(content)
+        elsif parsed_xml
+          @doc = parsed_xml
+        else
+          raise "Either :xml or :parsed_xml are required"
+        end
       end
     end
   end

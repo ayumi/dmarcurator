@@ -17,9 +17,9 @@ module Dmarcurator
         next if path == '.' || path == '..' || File.extname(path) != ".xml"
         puts "  #{path}"
         parsed_report = ::Dmarcurator::Parser::Report.new(xml: "#{reports_path}/#{path}")
-        ::Dmarcurator::Store::Report.import_parsed_report(db: db, parsed_report: parsed_report)
+        ::Dmarcurator::Store::Report.import_parsed(db: db, parsed: parsed_report)
       end
-      puts "Done importing"
+      puts "Done importing :)"
     end
   end
 end

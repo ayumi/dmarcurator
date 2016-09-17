@@ -15,7 +15,7 @@ module Dmarcurator
         doc.locate("feedback/report_metadata/extra_contact_info")[0]&.text
       end
 
-      def report_id
+      def dmarc_report_id
         doc.locate("feedback/report_metadata/report_id")[0].text
       end
 
@@ -56,7 +56,9 @@ module Dmarcurator
       end
 
       def records
-        #TODO
+        doc.locate("feedback/record").map do |record|
+          Record.new(parsed_xml: record)
+        end
       end
     end
   end

@@ -4,26 +4,38 @@ require "sequel"
 module Dmarcurator
   class Store
     # DMARC report. Contains many records.
-    class Record < Sequel::Model
+    class Record
       attr_reader :db
 
-      def self.create_table
+      def self.create_table(db:)
         db.create_table :records do
           primary_key :id
-          foreign_key(:report_id, :report, key: :id)
+          foreign_key(:report_id, :reports, key: :id)
           String :source_ip
           Integer :count
           String :disposition
-          String :result_dkim
-          String :result_spf
+          String :policy_result_dkim
+          String :policy_result_spf
           String :envelope_to
           String :header_from
-          Text :source
+          String :auth_dkim_domain
+          String :auth_dkim_result
+          String :auth_dkim_selector
+          String :auth_spf_domain
+          String :auth_spf_result
         end
       end
 
-      def initialize(db_uri)
-        @db = Sequel.connect(db_uri)
+      def self.import_parsed(db:, parsed:, report_id:)
+        create_table(db: db) if !db.table_exists?(:records)
+
+        attributes = { report_id: report_id }
+        db[:records].columns.each do |attribute|
+          next if !parsed.respond_to?(attribute)
+          attributes[attribute] = parsed.public_send(attribute)
+        end
+        result = db[:records].insert(attributes)
+        STDOUT << "."
       end
     end
   end

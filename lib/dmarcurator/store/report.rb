@@ -12,7 +12,7 @@ module Dmarcurator
           String :org_name
           String :email
           String :extra_contact_info
-          String :report_id
+          String :dmarc_report_id
           String :error
           DateTime :begin_at
           DateTime :end_at
@@ -23,23 +23,29 @@ module Dmarcurator
           String :policy_sp
           Integer :policy_pct
 
-          index :report_id
+          index :dmarc_report_id
         end
       end
 
-      def self.import_parsed_report(db:, parsed_report:)
+      def self.import_parsed(db:, parsed:)
         create_table(db: db) if !db.table_exists?(:reports)
-        if db[:reports].where(report_id: parsed_report.report_id).count > 0
+        if db[:reports].where(dmarc_report_id: parsed.dmarc_report_id).count > 0
           puts "Report exists; skipping"
           return
         end
 
         attributes = {}
         db[:reports].columns.each do |attribute|
-          next if !parsed_report.respond_to?(attribute)
-          attributes[attribute] = parsed_report.public_send(attribute)
+          next if !parsed.respond_to?(attribute)
+          attributes[attribute] = parsed.public_send(attribute)
         end
-        db[:reports].insert(attributes)
+        result = db[:reports].insert(attributes)
+        imported_report_id = db[:reports].select(:id).order('id ASC').limit(1).first[:id]
+
+        parsed.records.each do |parsed_record|
+          Record.import_parsed(db: db, parsed: parsed_record, report_id: imported_report_id)
+        end
+        puts "Report++"
       end
     end
   end
