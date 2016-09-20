@@ -1,6 +1,6 @@
 ## dmarcurator
 
-A simple tool to view DMARC reports.
+Imports DMARC report XML into SQLite DB.
 
 - [More info on email authentication](https://jl.ly/Email/authcheat.html)
 
@@ -14,8 +14,8 @@ Install sqlite3 bc it's cool and you need it
 ## usage
 
 - Get some DMARC reports in XML and put them in a directory.
-- `bin/dmarcurator --db=./dmarc/reports.sqlite --reports-path=./dmarc/reports`
+- `dmarcurator --db=./dmarc/reports.sqlite --reports-path=./dmarc/reports`
 
-## browse db
+## how to browse db
 
 [SQLite-web](https://github.com/coleifer/sqlite-web) is a deec interface.
