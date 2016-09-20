@@ -4,7 +4,7 @@ module Dmarcurator
     class App
       require "pry"
 
-      attr_reader :db_uri, :reports_path, :web_ui
+      attr_reader :db_uri, :reports_path
 
       def self.main
         params = parse_options(ARGV)
@@ -25,10 +25,6 @@ module Dmarcurator
             params[:reports_path] = value
           end
 
-          parser.on("-ui", "--web-ui=WEB_UI", "Start a web UI for looking at reports.") do |value|
-            params[:web_ui] = !!value
-          end
-
           parser.on("-h", "--help", "Halp pls") do
             puts parser
             exit 0
@@ -46,26 +42,22 @@ module Dmarcurator
         end
 
         opt_parser.parse!(options)
-        if !(params[:reports_path] || params[:web_ui])
-          puts "What would you like dmarcurator to do for you? I can either:\n1. Import DMARC reports into an sqlite3 database -> Set --db and --reports-path)\n2. Run a web UI for viewing imported reports -> Set --web-ui)."
+        if !params[:reports_path]
+          puts "Dmarcurator can import DMARC reports into an sqlite3 database -> Set --db and --reports-path)"
           exit 0
         end
 
         params
       end
 
-      def initialize(db_path:, reports_path: nil, web_ui: false)
+      def initialize(db_path:, reports_path: nil)
         @db_uri = "sqlite://#{File.expand_path(db_path)}"
         @reports_path = reports_path
-        @web_ui = web_ui
       end
 
       def run
         if reports_path
           ::Dmarcurator::ImportReports.new(db_uri: db_uri, reports_path: reports_path).run
-        end
-        if web_ui
-          # TODO
         end
       end
     end

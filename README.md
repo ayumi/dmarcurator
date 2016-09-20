@@ -15,3 +15,7 @@ Install sqlite3 bc it's cool and you need it
 
 - Get some DMARC reports in XML and put them in a directory.
 - `bin/dmarcurator --db=./dmarc/reports.sqlite --reports-path=./dmarc/reports`
+
+## browse db
+
+[SQLite-web](https://github.com/coleifer/sqlite-web) is a deec interface.
