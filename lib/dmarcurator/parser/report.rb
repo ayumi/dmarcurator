@@ -36,11 +36,11 @@ module Dmarcurator
       end
 
       def policy_adkim
-        doc.locate("feedback/policy_published/adkim")[0].text
+        doc.locate("feedback/policy_published/adkim")[0]&.text
       end
 
       def policy_aspf
-        doc.locate("feedback/policy_published/aspf")[0].text
+        doc.locate("feedback/policy_published/aspf")[0]&.text
       end
 
       def policy_p
