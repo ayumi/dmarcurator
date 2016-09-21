@@ -2,12 +2,12 @@
 require File.expand_path("../lib/dmarcurator/version", __FILE__)
 
 Gem::Specification.new do |s|
-  s.add_dependency "ox", "~> 2.4.5"
-  s.add_dependency "sequel", "~> 4.38.0"
-  s.add_dependency "sqlite3", "~> 1.3.11"
+  s.add_dependency "ox", "~> 2.4"
+  s.add_dependency "sequel", "~> 4.38"
+  s.add_dependency "sqlite3", "~> 1.3"
   s.add_development_dependency "bundler", "~> 1.13"
-  s.add_development_dependency "pry"
-  s.add_development_dependency "rake"
+  s.add_development_dependency "pry", "~> 0"
+  s.add_development_dependency "rake", "~> 0"
   s.authors = ["Ayumi Yu"]
   s.description = "Simple tool for viewing DMARC reports"
   s.email = ["ayumi@ayumiyu.com"]
